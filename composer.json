@@ -1,8 +1,12 @@
 {
-    "name": "djoudi/laravel-h5p",
+    "name": "soyamore/laravel-h5p",
     "description": "H5P Plugin for laravel platform",
     "type": "library",
     "authors": [
+        {
+            "name": "Anass BOUTAKAOUA",
+            "email": "soyamore@itcours.com"
+        },
         {
             "name": "Abdelouahab Djoudi",
             "email": "info@djoudi.net"

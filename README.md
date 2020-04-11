@@ -1,7 +1,4 @@
-[![StyleCI](https://styleci.io/repos/122313672/shield?branch=master)](https://styleci.io/repos/122313672)
-[![Build Status](https://travis-ci.org/djoudi/Laravel-H5P.svg?branch=master)](https://travis-ci.org/djoudi/Laravel-H5P)
-[![Scrutinizer Coverage](https://scrutinizer-ci.com/g/djoudi/Laravel-H5P/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/djoudi/Laravel-H5P/?branch=master)
-
+Forked from : https://github.com/djoudi/Laravel-H5P
 
 
 # H5P Plugin in Laravel Framework 
@@ -15,7 +12,7 @@
 Require it in the Composer.
 
 ```bash
-composer require djoudi/laravel-h5p
+composer require soyamore/laravel-h5p
 ```
 
 Publish the Views, Config and so things.
@@ -66,6 +63,3 @@ mklink /d content ..\..\..\storage\h5p\content
 mklink /d editor ..\..\..\storage\h5p\editor
 mklink /d libraries ..\..\..\storage\h5p\libraries
 ```
-
-## Demo
-you can see a demo  at : https://github.com/djoudi/laravel-h5p-demo
