@@ -1,6 +1,6 @@
 <?php
 
-namespace Djoudi\LaravelH5p\Http\Middleware;
+namespace Soyamore\LaravelH5p\Http\Middleware;
 
 use Closure;
 
@@ -10,7 +10,7 @@ class IeFix
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @param \Closure                 $next
      *
      * @return mixed

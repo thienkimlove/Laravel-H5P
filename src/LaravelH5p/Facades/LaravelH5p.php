@@ -1,6 +1,6 @@
 <?php
 
-namespace Djoudi\LaravelH5p\Facades;
+namespace Soyamore\LaravelH5p\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

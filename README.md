@@ -45,7 +45,7 @@ Add to Composer-Classmap:
 
 ```php
 'providers' => [
-    Djoudi\LaravelH5p\LaravelH5pServiceProvider::class,
+    Soyamore\LaravelH5p\LaravelH5pServiceProvider::class,
 ];
 ```
 

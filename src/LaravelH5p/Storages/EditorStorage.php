@@ -10,12 +10,12 @@
  *
  */
 
-namespace Djoudi\LaravelH5p\Storages;
+namespace Soyamore\LaravelH5p\Storages;
 
 use App;
 use DB;
-use Djoudi\LaravelH5p\Eloquents\H5pLibrary;
-use Djoudi\LaravelH5p\Eloquents\H5pTmpfile;
+use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
+use Soyamore\LaravelH5p\Eloquents\H5pTmpfile;
 use H5peditorStorage;
 
 /**

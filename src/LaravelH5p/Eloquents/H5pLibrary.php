@@ -1,6 +1,6 @@
 <?php
 
-namespace Djoudi\LaravelH5p\Eloquents;
+namespace Soyamore\LaravelH5p\Eloquents;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;

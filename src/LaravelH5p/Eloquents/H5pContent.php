@@ -1,6 +1,6 @@
 <?php
 
-namespace Djoudi\LaravelH5p\Eloquents;
+namespace Soyamore\LaravelH5p\Eloquents;
 
 use App\User;
 use DB;

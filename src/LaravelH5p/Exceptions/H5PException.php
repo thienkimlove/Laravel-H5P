@@ -10,7 +10,7 @@
  *
  */
 
-namespace Djoudi\LaravelH5p\Exceptions;
+namespace Soyamore\LaravelH5p\Exceptions;
 
 use Exception;
 

@@ -10,9 +10,9 @@
  *
  */
 
-namespace Djoudi\LaravelH5p\Events;
+namespace Soyamore\LaravelH5p\Events;
 
-use Djoudi\LaravelH5p\Eloquents\H5pEventLog;
+use Soyamore\LaravelH5p\Eloquents\H5pEventLog;
 use H5PEventBase;
 use Illuminate\Support\Facades\Auth;
 

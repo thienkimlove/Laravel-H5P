@@ -1,10 +1,10 @@
 <?php
 
-namespace Djoudi\LaravelH5p;
+namespace Soyamore\LaravelH5p;
 
-use Djoudi\LaravelH5p\Commands\MigrationCommand;
-use Djoudi\LaravelH5p\Commands\ResetCommand;
-use Djoudi\LaravelH5p\Helpers\H5pHelper;
+use Soyamore\LaravelH5p\Commands\MigrationCommand;
+use Soyamore\LaravelH5p\Commands\ResetCommand;
+use Soyamore\LaravelH5p\Helpers\H5pHelper;
 
 class LaravelH5pServiceProvider extends \Illuminate\Support\ServiceProvider
 {
@@ -16,8 +16,8 @@ class LaravelH5pServiceProvider extends \Illuminate\Support\ServiceProvider
      * @var array
      */
     protected $listen = [
-        'Djoudi\LaravelH5p\Events\H5pEvent' => [
-            'Djoudi\LaravelH5p\Listeners\H5pNotification',
+        'Soyamore\LaravelH5p\Events\H5pEvent' => [
+            'Soyamore\LaravelH5p\Listeners\H5pNotification',
         ],
     ];
 

@@ -10,18 +10,18 @@
  *
  */
 
-namespace Djoudi\LaravelH5p\Repositories;
+namespace Soyamore\LaravelH5p\Repositories;
 
 use Carbon\Carbon;
 use DB;
-use Djoudi\LaravelH5p\Eloquents\H5pContent;
-use Djoudi\LaravelH5p\Eloquents\H5pContentsLibrary;
-use Djoudi\LaravelH5p\Eloquents\H5pContentsUserData;
-use Djoudi\LaravelH5p\Eloquents\H5pLibrariesLibrary;
-use Djoudi\LaravelH5p\Eloquents\H5pLibrary;
-use Djoudi\LaravelH5p\Eloquents\H5pResult;
-use Djoudi\LaravelH5p\Events\H5pEvent;
-use Djoudi\LaravelH5p\Helpers\H5pHelper;
+use Soyamore\LaravelH5p\Eloquents\H5pContent;
+use Soyamore\LaravelH5p\Eloquents\H5pContentsLibrary;
+use Soyamore\LaravelH5p\Eloquents\H5pContentsUserData;
+use Soyamore\LaravelH5p\Eloquents\H5pLibrariesLibrary;
+use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
+use Soyamore\LaravelH5p\Eloquents\H5pResult;
+use Soyamore\LaravelH5p\Events\H5pEvent;
+use Soyamore\LaravelH5p\Helpers\H5pHelper;
 use GuzzleHttp\Client;
 use H5PFrameworkInterface;
 use Illuminate\Support\Facades\App;
