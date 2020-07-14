@@ -1,10 +1,10 @@
 <?php
 
-namespace Soyamore\LaravelH5p\Http\Controllers;
+namespace InHub\LaravelH5p\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Soyamore\LaravelH5p\Eloquents\H5pContent;
-use Soyamore\LaravelH5p\Events\H5pEvent;
+use InHub\LaravelH5p\Eloquents\H5pContent;
+use InHub\LaravelH5p\Events\H5pEvent;
 use H5pCore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;

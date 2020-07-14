@@ -10,12 +10,12 @@
  *
  */
 
-namespace Soyamore\LaravelH5p;
+namespace InHub\LaravelH5p;
 
-use Soyamore\LaravelH5p\Repositories\EditorAjaxRepository;
-use Soyamore\LaravelH5p\Repositories\LaravelH5pRepository;
-use Soyamore\LaravelH5p\Storages\EditorStorage;
-use Soyamore\LaravelH5p\Storages\LaravelH5pStorage;
+use InHub\LaravelH5p\Repositories\EditorAjaxRepository;
+use InHub\LaravelH5p\Repositories\LaravelH5pRepository;
+use InHub\LaravelH5p\Storages\EditorStorage;
+use InHub\LaravelH5p\Storages\LaravelH5pStorage;
 use H5PContentValidator;
 use H5PCore;
 

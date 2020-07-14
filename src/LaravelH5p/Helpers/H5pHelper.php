@@ -10,7 +10,7 @@
  *
  */
 
-namespace Soyamore\LaravelH5p\Helpers;
+namespace InHub\LaravelH5p\Helpers;
 
 class H5pHelper
 {

@@ -1,16 +1,16 @@
 <?php
 
-namespace Soyamore\LaravelH5p\Http\Controllers;
+namespace InHub\LaravelH5p\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Soyamore\LaravelH5p\Events\H5pEvent;
+use InHub\LaravelH5p\Events\H5pEvent;
 use H5PEditorEndpoints;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Log;
-use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
-use Soyamore\LaravelH5p\Eloquents\H5pResult;
-use Soyamore\LaravelH5p\Eloquents\H5pContentsUserData;
+use InHub\LaravelH5p\Eloquents\H5pLibrary;
+use InHub\LaravelH5p\Eloquents\H5pResult;
+use InHub\LaravelH5p\Eloquents\H5pContentsUserData;
 
 class AjaxController extends Controller
 {

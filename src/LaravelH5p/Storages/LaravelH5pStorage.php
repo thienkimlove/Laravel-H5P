@@ -10,7 +10,7 @@
  *
  */
 
-namespace Soyamore\LaravelH5p\Storages;
+namespace InHub\LaravelH5p\Storages;
 
 use H5PFileStorage;
 

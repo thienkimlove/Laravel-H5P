@@ -10,11 +10,11 @@
  *
  */
 
-namespace Soyamore\LaravelH5p\Repositories;
+namespace InHub\LaravelH5p\Repositories;
 
 use DB;
-use Soyamore\LaravelH5p\Eloquents\H5pLibrariesHubCache;
-use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
+use InHub\LaravelH5p\Eloquents\H5pLibrariesHubCache;
+use InHub\LaravelH5p\Eloquents\H5pLibrary;
 use H5PEditorAjaxInterface;
 use Illuminate\Support\Facades\Auth;
 

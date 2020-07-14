@@ -1,6 +1,6 @@
 <?php
 
-namespace Soyamore\LaravelH5p\Commands;
+namespace InHub\LaravelH5p\Commands;
 
 use Illuminate\Console\Command;
 

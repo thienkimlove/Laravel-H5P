@@ -10,18 +10,18 @@
  *
  */
 
-namespace Soyamore\LaravelH5p\Repositories;
+namespace InHub\LaravelH5p\Repositories;
 
 use Carbon\Carbon;
 use DB;
-use Soyamore\LaravelH5p\Eloquents\H5pContent;
-use Soyamore\LaravelH5p\Eloquents\H5pContentsLibrary;
-use Soyamore\LaravelH5p\Eloquents\H5pContentsUserData;
-use Soyamore\LaravelH5p\Eloquents\H5pLibrariesLibrary;
-use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
-use Soyamore\LaravelH5p\Eloquents\H5pResult;
-use Soyamore\LaravelH5p\Events\H5pEvent;
-use Soyamore\LaravelH5p\Helpers\H5pHelper;
+use InHub\LaravelH5p\Eloquents\H5pContent;
+use InHub\LaravelH5p\Eloquents\H5pContentsLibrary;
+use InHub\LaravelH5p\Eloquents\H5pContentsUserData;
+use InHub\LaravelH5p\Eloquents\H5pLibrariesLibrary;
+use InHub\LaravelH5p\Eloquents\H5pLibrary;
+use InHub\LaravelH5p\Eloquents\H5pResult;
+use InHub\LaravelH5p\Events\H5pEvent;
+use InHub\LaravelH5p\Helpers\H5pHelper;
 use GuzzleHttp\Client;
 use H5PFrameworkInterface;
 use H5PPermission;

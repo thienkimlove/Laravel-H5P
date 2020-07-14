@@ -1,6 +1,6 @@
 <?php
 
-namespace Soyamore\LaravelH5p\Http\Middleware;
+namespace InHub\LaravelH5p\Http\Middleware;
 
 use Closure;
 

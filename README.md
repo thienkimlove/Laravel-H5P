@@ -1,18 +1,13 @@
-Forked from : https://github.com/djoudi/Laravel-H5P
-
-
 # H5P Plugin in Laravel Framework 
 
 ## Description
-
-
 
 ## Installation
 
 Require it in the Composer.
 
 ```bash
-composer require soyamore/laravel-h5p
+composer require inhubdev/laravel-h5p
 ```
 
 Publish the Views, Config and so things.
@@ -45,21 +40,26 @@ Add to Composer-Classmap:
 
 ```php
 'providers' => [
-    Soyamore\LaravelH5p\LaravelH5pServiceProvider::class,
+    InHub\LaravelH5p\LaravelH5pServiceProvider::class,
 ];
 ```
 
 For linux
 ```bash
 cd public/vendor/h5p
-ln -s ../../../storage/h5p/content
-ln -s ../../../storage/h5p/editor
-ln -s ../../../storage/h5p/libraries
+ln -s ../../../../storage/h5p/content
+ln -s ../../../../storage/h5p/editor
+ln -s ../../../../storage/h5p/libraries
 ```
 For windows
 ```cmd admin window
 cd public/vendor/h5p
-mklink /d content ..\..\..\storage\h5p\content
-mklink /d editor ..\..\..\storage\h5p\editor
-mklink /d libraries ..\..\..\storage\h5p\libraries
+mklink /d content ..\..\..\..\storage\h5p\content
+mklink /d editor ..\..\..\..\storage\h5p\editor
+mklink /d libraries ..\..\..\..\storage\h5p\libraries
 ```
+
+## Credits
+
+[Abdelouahab Djoudi](https://github.com/djoudi/Laravel-H5P) - Package creator.
+[Anass Boutakaoua](https://github.com/soyamore/Laravel-H5P) - Laravel 7 support and base for this package.
