@@ -28,16 +28,16 @@ Route::group(['middleware' => ['web']], function () {
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@libraries')->name('h5p.ajax.libraries');
         Route::get('ajax/single-libraries',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@singleLibrary')->name('h5p.ajax.single-libraries');
-        Route::post('ajax/content-type-cache',
+        Route::get('ajax/content-type-cache',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@contentTypeCache')->name('h5p.ajax.content-type-cache');
-        Route::post('ajax/library-install',
+        Route::get('ajax/library-install',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@libraryInstall')->name('h5p.ajax.library-install');
         Route::post('ajax/library-upload',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@libraryUpload')->name('h5p.ajax.library-upload');
         Route::post('ajax/rebuild-cache',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@rebuildCache')->name('h5p.ajax.rebuild-cache');
         Route::post('ajax/files', 'Soyamore\LaravelH5p\Http\Controllers\AjaxController@files')->name('h5p.ajax.files');
-        Route::get('ajax/finish',
+        Route::post('ajax/finish',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@finish')->name('h5p.ajax.finish');
         Route::post('ajax/content-user-data',
             'Soyamore\LaravelH5p\Http\Controllers\AjaxController@contentUserData')->name('h5p.ajax.content-user-data');

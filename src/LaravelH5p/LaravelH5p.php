@@ -222,7 +222,7 @@ class LaravelH5p
         $settings = [
             'baseUrl'            => config('laravel-h5p.domain'),
             'url'                => self::get_h5p_storage(), // for uploaded
-            'postUserStatistics' => (config('laravel-h5p.h5p_track_user', true) === '1') && Auth::check(),
+            'postUserStatistics' => (config('laravel-h5p.h5p_track_user', true) === true) && Auth::check(),
             'ajax'               => [
                 'setFinished'     => route('h5p.ajax.finish'),
                 'contentUserData' => route('h5p.ajax.content-user-data'),
@@ -380,7 +380,7 @@ class LaravelH5p
 
         // Get preloaded user data for the current user
         if (config('laravel-h5p.h5p_save_content_state') && Auth::check()) {
-            $results = DB::select('
+            $results = \DB::select('
                 SELECT
                 hcud.sub_content_id,
                 hcud.data_id,

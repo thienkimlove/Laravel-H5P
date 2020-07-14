@@ -24,6 +24,7 @@ use Soyamore\LaravelH5p\Events\H5pEvent;
 use Soyamore\LaravelH5p\Helpers\H5pHelper;
 use GuzzleHttp\Client;
 use H5PFrameworkInterface;
+use H5PPermission;
 use Illuminate\Support\Facades\App;
 
 class LaravelH5pRepository implements H5PFrameworkInterface
@@ -119,6 +120,11 @@ class LaravelH5pRepository implements H5PFrameworkInterface
      */
     public function getLibraryFileUrl($libraryFolderName, $fileName)
     {
+        // Bug fix for library icon
+        if (file_exists(public_path() . '/assets/vendor/h5p/libraries/'.$libraryFolderName.'/'.$fileName) && $fileName == 'icon.svg') {
+            return url('/assets/vendor/h5p/libraries/'.$libraryFolderName.'/'.$fileName);
+        }
+
         return url('vendor/h5p/h5p-core/'.$libraryFolderName.'/'.$fileName);
     }
 
@@ -780,9 +786,7 @@ class LaravelH5pRepository implements H5PFrameworkInterface
 
         try {
             if ($data !== null) {
-                // Post
-                $options['body'] = $data;
-                $response = $client->request('POST', $url, ['form_params' => $options]);
+                $response = $client->request('POST', $url, ['form_params' => $data]);
             } else {
                 // Get
                 if (empty($options['filename'])) {
@@ -790,9 +794,12 @@ class LaravelH5pRepository implements H5PFrameworkInterface
                     //                $response = wp_remote_get($url);
                     $response = $client->request('GET', $url);
                 } else {
+                    $resource = fopen($options['filename'], 'w');
+                    $stream = \GuzzleHttp\Psr7\stream_for($resource);
+
                     // Use safe when downloading files
                     //                $response = wp_safe_remote_get($url, $options);
-                    $response = $client->request('GET', $url, $options);
+                    $response = $client->request('GET', $url, ['save_to' => $stream]);
                 }
             }
 
@@ -989,50 +996,29 @@ class LaravelH5pRepository implements H5PFrameworkInterface
 
         foreach ($contentTypeCache->contentTypes as $ct) {
             // Insert into db
-            DB::insert('INSERT INTO h5p_libraries_hub_cache (
-                machine_name,
-                major_version,
-                minor_version,
-                patch_version,
-                h5p_major_version,
-                h5p_minor_version,
-                title,
-                summary,
-                description,
-                icon,
-                created_at,
-                updated_at,
-                is_recommended,
-                popularity,
-                screenshots,
-                license,
-                example,
-                tutorial,
-                keywords,
-                categories,
-                owner) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [
-                $ct->id,
-                $ct->version->major,
-                $ct->version->minor,
-                $ct->version->patch,
-                $ct->coreApiVersionNeeded->major,
-                $ct->coreApiVersionNeeded->minor,
-                $ct->title,
-                $ct->summary,
-                $ct->description,
-                $ct->icon,
-                (new DateTime($ct->createdAt))->getTimestamp(),
-                (new DateTime($ct->updatedAt))->getTimestamp(),
-                $ct->isRecommended === true ? 1 : 0,
-                $ct->popularity,
-                json_encode($ct->screenshots),
-                json_encode(isset($ct->license) ? $ct->license : []),
-                $ct->example,
-                isset($ct->tutorial) ? $ct->tutorial : '',
-                json_encode(isset($ct->keywords) ? $ct->keywords : []),
-                json_encode(isset($ct->categories) ? $ct->categories : []),
-                $ct->owner, ]
-            );
+            DB::table('h5p_libraries_hub_cache')->insert([
+                'machine_name' => $ct->id,
+                'major_version' => $ct->version->major,
+                'minor_version' => $ct->version->minor,
+                'patch_version' => $ct->version->patch,
+                'h5p_major_version' => $ct->coreApiVersionNeeded->major,
+                'h5p_minor_version' => $ct->coreApiVersionNeeded->minor,
+                'title' => $ct->title,
+                'summary' => $ct->summary,
+                'description' => $ct->description,
+                'icon' => $ct->icon,
+                'created_at' => (new \DateTime($ct->createdAt))->getTimestamp(),
+                'updated_at' => (new \DateTime($ct->updatedAt))->getTimestamp(),
+                'is_recommended' => $ct->isRecommended === true ? 1 : 0,
+                'popularity' => $ct->popularity,
+                'screenshots' => json_encode($ct->screenshots),
+                'license' => json_encode(isset($ct->license) ? $ct->license : []),
+                'example' => $ct->example,
+                'tutorial' => isset($ct->tutorial) ? $ct->tutorial : '',
+                'keywords' => json_encode(isset($ct->keywords) ? $ct->keywords : []),
+                'categories' => json_encode(isset($ct->categories) ? $ct->categories : []),
+                'owner' => $ct->owner,
+            ]);
         }
     }
 }

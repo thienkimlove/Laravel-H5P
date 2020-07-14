@@ -33,6 +33,7 @@ class EditorStorage implements H5peditorStorage
 
     public function getAvailableLanguages($machineName, $majorVersion, $minorVersion)
     {
+        return [];
     }
 
     public function getLanguage($machineName, $majorVersion, $minorVersion, $language)
@@ -77,6 +78,7 @@ class EditorStorage implements H5peditorStorage
 
             // Load all libraries
             $libraries = [];
+
             $libraries_result = H5pLibrary::where('runnable', 1)
                 ->select([
                     //                        'id',
@@ -161,7 +163,7 @@ class EditorStorage implements H5peditorStorage
     public static function removeTemporarilySavedFiles($filePath)
     {
         if (is_dir($filePath)) {
-            H5PCore::deleteFileTree($filePath);
+            \H5PCore::deleteFileTree($filePath);
         } else {
             unlink($filePath);
         }

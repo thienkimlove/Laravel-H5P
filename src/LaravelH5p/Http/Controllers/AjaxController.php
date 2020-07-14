@@ -8,6 +8,9 @@ use H5PEditorEndpoints;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Log;
+use Soyamore\LaravelH5p\Eloquents\H5pLibrary;
+use Soyamore\LaravelH5p\Eloquents\H5pResult;
+use Soyamore\LaravelH5p\Eloquents\H5pContentsUserData;
 
 class AjaxController extends Controller
 {
@@ -49,7 +52,28 @@ class AjaxController extends Controller
     {
         $h5p = App::make('LaravelH5p');
         $editor = $h5p::$h5peditor;
-        $editor->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE, $request->get('_token'));
+
+        $response = $editor->ajax->action(H5PEditorEndpoints::CONTENT_TYPE_CACHE, $request->get('_token'));
+
+        $installedLibraries = H5pLibrary::all();
+
+        $response['libraries'] = collect($response['libraries'])->map(function ($lib) use ($installedLibraries) {
+            $lib['installed'] = $installedLibraries->contains('name', $lib['machineName']);
+
+            if ($lib['installed']) {
+                $installedLibrary = $installedLibraries->filter(function ($installedLib) use ($lib) {
+                    return $installedLib['name'] == $lib['machineName'];
+                })->first();
+
+                $lib['localMajorVersion'] = $installedLibrary->major_version;
+                $lib['localMinorVersion'] = $installedLibrary->minor_version;
+                $lib['localPatchVersion'] = $installedLibrary->patch_version;
+            }
+
+            return $lib;
+        });
+
+        return $response;
     }
 
     public function libraryInstall(Request $request)
@@ -82,11 +106,57 @@ class AjaxController extends Controller
 
     public function finish(Request $request)
     {
-        return response()->json($request->all());
+        $input = $request->all();
+
+        $data = [
+            'content_id' => $input['contentId'],
+            'max_score' => $input['maxScore'],
+            'score' => $input['score'],
+            'opened' => $input['opened'],
+            'finished' => $input['finished'],
+            'time' => $input['finished'] - $input['opened'],
+            'user_id' => \Auth::user()->id,
+        ];
+
+        H5pResult::create($data);
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     public function contentUserData(Request $request)
     {
-        return response()->json($request->all());
+        $input = $request->all();
+
+        $contentId = basename($request->header('referer'));
+
+        $userData = H5pContentsUserData::where([
+            'content_id' => $contentId,
+            'data_id' => 'state',
+            'sub_content_id' => 0,
+            'user_id' => \Auth::user()->id,
+        ])->first();
+
+        $data = [
+            'content_id' => $contentId,
+            'data_id' => 'state',
+            'sub_content_id' => 0,
+            'user_id' => \Auth::user()->id,
+            'data' => $input['data'],
+            'preload' => $input['preload'],
+            'invalidate' => $input['invalidate'],
+            'updated_at' => now(),
+        ];
+
+        if (empty($userData)) {
+            H5pContentsUserData::create($data);
+        } else {
+            $userData->update($data);
+        }
+
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }
