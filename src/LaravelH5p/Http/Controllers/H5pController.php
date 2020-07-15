@@ -83,8 +83,6 @@ class H5pController extends Controller
             'slug'       => config('laravel-h5p.slug'),
         ];
 
-        $content['filtered'] = '';
-
         try {
             if ($request->get('action') === 'create') {
                 $content['library'] = $core->libraryFromString($request->get('library'));
@@ -102,11 +100,13 @@ class H5pController extends Controller
                 // $params = json_decode($content['params']);
 
                 //new
-                $params = json_decode($request->get('parameters'));
-                $content['params'] = json_encode($params->params);
-                if ($params === null) {
+                $content['params'] = $request->get('parameters');
+                if ($content['params'] === null) {
                     throw new H5PException('Invalid parameters');
                 }
+
+                $params = json_decode($content['params']);
+                $content['filtered'] = !empty($params->params) ? json_encode($params->params) : '';
 
                 // Set disabled features
                 $this->get_disabled_content_features($core, $content);
@@ -115,7 +115,7 @@ class H5pController extends Controller
                 $content['id'] = $core->saveContent($content);
 
                 // Move images and find all content dependencies
-                $editor->processParameters($content['id'], $content['library'], $params, $oldLibrary, $oldParams);
+                $editor->processParameters($content['id'], $content['library'], $content['params'], $oldLibrary, $oldParams);
 
                 event(new H5pEvent('content', $event_type, $content['id'], $content['title'], $content['library']['machineName'], $content['library']['majorVersion'], $content['library']['minorVersion']));
 
@@ -154,6 +154,7 @@ class H5pController extends Controller
         $settings = $h5p::get_core();
         $content = $h5p->get_content($id);
         $embed = $h5p->get_embed($content, $settings);
+
         $embed_code = $embed['embed'];
         $settings = $embed['settings'];
 
@@ -217,9 +218,8 @@ class H5pController extends Controller
                 //$params = json_decode($content['params']);
 
                 //new
-                $params = json_decode($request->get('parameters'));
-                $content['params'] = json_encode($params->params);
-                if ($params === null) {
+                $content['params'] = $request->get('parameters');
+                if ($content['params'] === null) {
                     throw new H5PException('Invalid parameters');
                 }
 
@@ -230,7 +230,7 @@ class H5pController extends Controller
                 $core->saveContent($content);
 
                 // Move images and find all content dependencies
-                $editor->processParameters($content['id'], $content['library'], $params, $oldLibrary, $oldParams);
+                $editor->processParameters($content['id'], $content['library'], $content['params'], $oldLibrary, $oldParams);
 
                 event(new H5pEvent('content', $event_type, $content['id'], $content['title'], $content['library']['machineName'], $content['library']['majorVersion'], $content['library']['minorVersion']));
 

@@ -389,11 +389,13 @@ class LaravelH5pRepository implements H5PFrameworkInterface
      */
     public function updateContent($entry, $contentMainId = null)
     {
+        $params = json_decode($entry['params']);
+
         $content = [];
         $content['title'] = $entry['title'];
         $content['embed_type'] = $entry['embed_type'];
         $content['user_id'] = $entry['user_id'];
-        $content['filtered'] = $entry['filtered'];
+        $content['filtered'] = !empty($params->params) ? json_encode($params->params) : $entry['filtered'];
         $content['disable'] = $entry['disable'];
         $content['slug'] = $entry['slug'];
         $content['library_id'] = $entry['library']['libraryId'];
