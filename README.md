@@ -59,7 +59,33 @@ mklink /d editor ..\..\..\..\storage\h5p\editor
 mklink /d libraries ..\..\..\..\storage\h5p\libraries
 ```
 
+You probably will need to add it to your `app/Http/Middleware/VerifyCsrfToken.php` due to H5P ajax requests without Laravel CSRL token:
+
+```php
+protected $except = [
+    '/ajax/library-upload',
+    '/ajax/finish',
+    '/ajax/content-user-data',
+    '/ajax/library-install',
+    '/ajax/files',
+];
+```
+
+If your server runs on https, you will need to add it to your `app/Providers/AppServiceProvider.php`:
+
+```php
+use Illuminate\Support\Facades\URL;
+
+public function boot()
+{
+    /* ... */
+
+    URL::forceScheme('https');
+}
+```
+
 ## Credits
 
 [Abdelouahab Djoudi](https://github.com/djoudi/Laravel-H5P) - Package creator.
+
 [Anass Boutakaoua](https://github.com/soyamore/Laravel-H5P) - Laravel 7 support and base for this package.

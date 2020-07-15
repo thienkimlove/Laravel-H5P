@@ -88,28 +88,14 @@ class EditorAjaxRepository implements H5PEditorAjaxInterface
 
     public function getLatestLibraryVersions()
     {
-        $recently_used = [];
-        $result = DB::table('h5p_event_logs')
-            ->selectRaw('library_name, max(created_at) AS max_created_at')
-            ->where('type', 'content')
-            ->where('sub_type', 'create')
-            ->where('user_id', Auth::id())
-            ->groupBy('library_name')
-            ->orderBy('max_created_at', 'DESC')
+        $recentlyUsed = H5PLibrary::where('semantics', '!=', '')
             ->get();
 
-        foreach ($result as $row) {
-            $lib = H5PLibrary::where('name', $row->library_name)
-                ->get()
-                ->last();
+        $recentlyUsed->each(function ($val) {
+            $val->machine_name = $val->name;
+        });
 
-            if (!empty($lib)) {
-                $lib->machine_name = $row->library_name;
-                $recently_used[] = $lib;
-            }
-        }
-
-        return $recently_used;
+        return $recentlyUsed;
     }
 
     public function validateEditorToken($token)

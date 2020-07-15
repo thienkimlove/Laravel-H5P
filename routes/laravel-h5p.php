@@ -30,7 +30,7 @@ Route::group(['middleware' => ['web']], function () {
             'InHub\LaravelH5p\Http\Controllers\AjaxController@singleLibrary')->name('h5p.ajax.single-libraries');
         Route::post('ajax/content-type-cache',
             'InHub\LaravelH5p\Http\Controllers\AjaxController@contentTypeCache')->name('h5p.ajax.content-type-cache');
-        Route::get('ajax/library-install',
+        Route::post('ajax/library-install',
             'InHub\LaravelH5p\Http\Controllers\AjaxController@libraryInstall')->name('h5p.ajax.library-install');
         Route::post('ajax/library-upload',
             'InHub\LaravelH5p\Http\Controllers\AjaxController@libraryUpload')->name('h5p.ajax.library-upload');
