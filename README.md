@@ -59,7 +59,7 @@ mklink /d editor ..\..\..\..\storage\h5p\editor
 mklink /d libraries ..\..\..\..\storage\h5p\libraries
 ```
 
-You probably will need to add it to your `app/Http/Middleware/VerifyCsrfToken.php` due to H5P ajax requests without Laravel CSRL token:
+You probably will need to add it to your `app/Http/Middleware/VerifyCsrfToken.php` due to H5P ajax requests without Laravel CSRF token:
 
 ```php
 protected $except = [
