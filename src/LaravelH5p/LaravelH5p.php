@@ -361,10 +361,6 @@ class LaravelH5p
         // Getting author's user id
         $author_id = (int) (is_array($content) ? $content['user_id'] : $content->user_id);
 
-        if ($safe_parameters == '{}') {
-            $safe_parameters = json_encode(json_decode($content['params'])->params);
-        }
-
         // Add JavaScript settings for this content
         $settings = [
             'library'         => H5PCore::libraryToString($content['library']),

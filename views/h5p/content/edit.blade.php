@@ -14,24 +14,6 @@
 
             <fieldset>
 
-                <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
-                    <label for="inputTitle" class="control-label">{{ trans('laravel-h5p.content.title') }}</label>
-                    <div>
-                        {{ Form::text('title', old('title'), [
-                                'class' => 'form-control',
-                                'placeholder' => trans('laravel-h5p.content.title'),
-                                'id' => 'laravel-h5p-title',
-                            ]) }}
-
-                        @if ($errors->has('title'))
-                        <span class="help-block">
-                            {{ $errors->first('title') }}
-                        </span>
-                        @endif
-                    </div>
-                </div>
-
-
                 <div id="laravel-h5p-create" class="form-group {{ $errors->has('parameters') ? 'has-error' : '' }}">
                     <label for="inputParameters" class="control-label">{{ trans('laravel-h5p.content.parameters') }}</label>
                     <div>
