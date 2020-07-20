@@ -42,6 +42,7 @@ class LaravelH5pRepository implements H5PFrameworkInterface
 
     public function loadAddons()
     {
+        return [];
     }
 
     public function getLibraryConfig($libraries = null)
