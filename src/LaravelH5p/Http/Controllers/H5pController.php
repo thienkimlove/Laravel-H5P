@@ -9,6 +9,7 @@ use H5pCore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use InHub\LaravelH5p\Exceptions\H5PException;
 
 class H5pController extends Controller
 {
@@ -64,10 +65,8 @@ class H5pController extends Controller
         $editor = $h5p::$h5peditor;
 
         $this->validate($request, [
-            'title'  => 'required|max:250',
             'action' => 'required',
         ], [], [
-            'title'  => trans('laravel-h5p.content.title'),
             'action' => trans('laravel-h5p.content.action'),
         ]);
 
@@ -77,7 +76,6 @@ class H5pController extends Controller
         $content = [
             'disable'    => H5PCore::DISABLE_NONE,
             'user_id'    => Auth::id(),
-            'title'      => $request->get('title'),
             'embed_type' => 'div',
             'filtered'   => '',
             'slug'       => config('laravel-h5p.slug'),
@@ -103,7 +101,11 @@ class H5pController extends Controller
 
                 //new
                 $params = json_decode($request->get('parameters'));
-                $content['title'] = $params->metadata->title;
+                if (!empty($params->metadata) && !empty($params->metadata->title)) {
+                    $content['title'] = $params->metadata->title;
+                } else {
+                    $content['title'] = '';
+                }
                 $content['params'] = json_encode($params->params);
                 if ($params === null) {
                     throw new H5PException('Invalid parameters');
@@ -188,10 +190,8 @@ class H5pController extends Controller
         $editor = $h5p::$h5peditor;
 
         $this->validate($request, [
-            'title'  => 'required|max:250',
             'action' => 'required',
         ], [], [
-            'title'  => trans('laravel-h5p.content.title'),
             'action' => trans('laravel-h5p.content.action'),
         ]);
 
@@ -200,7 +200,6 @@ class H5pController extends Controller
         $content['embed_type'] = 'div';
         $content['user_id'] = Auth::id();
         $content['disable'] = $request->get('disable') ? $request->get('disable') : false;
-        $content['title'] = $request->get('title');
         $content['filtered'] = '';
 
         $oldLibrary = $content['library'];
@@ -226,7 +225,11 @@ class H5pController extends Controller
 
                 //new
                 $params = json_decode($request->get('parameters'));
-                $content['title'] = $params->metadata->title;
+                if (!empty($params->metadata) && !empty($params->metadata->title)) {
+                    $content['title'] = $params->metadata->title;
+                } else {
+                    $content['title'] = '';
+                }
                 $content['params'] = json_encode($params->params);
                 if ($params === null) {
                     throw new H5PException('Invalid parameters');
@@ -278,14 +281,13 @@ class H5pController extends Controller
         $embed = $h5p->get_embed($content, $settings);
         $embed_code = $embed['embed'];
         $settings = $embed['settings'];
-        $title = $content['title'];
         $user = Auth::user();
 
         // create event dispatch
         event(new H5pEvent('content', null, $content['id'], $content['title'], $content['library']['name'], $content['library']['majorVersion'], $content['library']['minorVersion']));
 
         //     return view('h5p.content.edit', compact("settings", 'user', 'id', 'content', 'library', 'parameters', 'display_options'));
-        return view('h5p.content.show', compact('settings', 'user', 'embed_code', 'title'));
+        return view('h5p.content.show', compact('settings', 'user', 'embed_code'));
     }
 
     public function destroy(Request $request, $id)
