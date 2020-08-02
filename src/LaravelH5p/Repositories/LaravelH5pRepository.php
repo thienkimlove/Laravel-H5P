@@ -40,6 +40,8 @@ class LaravelH5pRepository implements H5PFrameworkInterface
      */
     protected $messages = ['error' => [], 'updated' => []];
 
+    private $loadedLibraries = [];
+
     public function loadAddons()
     {
         return [];
@@ -308,13 +310,18 @@ class LaravelH5pRepository implements H5PFrameworkInterface
             ->delete();
 
         if (isset($library['language'])) {
+            $languages = [];
+
             foreach ($library['language'] as $languageCode => $translation) {
-                DB::table('h5p_libraries_languages')->insert([
+                $languages[] = [
                     'library_id'    => $library['libraryId'],
                     'language_code' => $languageCode,
                     'translation'   => $translation,
-                ]
-                );
+                ];
+            }
+            
+            if (count($languages) > 0) {
+                DB::table('h5p_libraries_languages')->insert($languages);
             }
         }
     }
@@ -485,29 +492,68 @@ class LaravelH5pRepository implements H5PFrameworkInterface
      */
     public function saveLibraryUsage($contentId, $librariesInUse)
     {
+        $libraryIds = [];
         $dropLibraryCssList = [];
         foreach ($librariesInUse as $dependency) {
             if (!empty($dependency['library']['dropLibraryCss'])) {
                 $dropLibraryCssList = array_merge($dropLibraryCssList, explode(', ', $dependency['library']['dropLibraryCss']));
             }
         }
+
+        $contentLibraries = [];
+
         foreach ($librariesInUse as $dependency) {
             $dropCss = in_array($dependency['library']['machineName'], $dropLibraryCssList) ? 1 : 0;
-            DB::table('h5p_contents_libraries')->insert([
+            $libraryIds[] = $dependency['library']['libraryId'];
+            $contentLibraries[] = [
                 'content_id'      => strval($contentId),
                 'library_id'      => $dependency['library']['libraryId'],
                 'dependency_type' => $dependency['type'],
                 'drop_css'        => $dropCss,
                 'weight'          => $dependency['weight'],
-            ]);
+            ];
+        }
+
+        if (count($contentLibraries) > 0) {
+            DB::table('h5p_contents_libraries')->insert($contentLibraries);
+        }
+
+        $content = DB::table('h5p_contents')->find($contentId);
+        $libraryDependencies = DB::table('h5p_libraries_libraries')
+            ->where('library_id', $content->library_id)
+            ->get();
+
+        $arr = $libraryDependencies->map(function ($val) use ($contentId, $libraryIds) {
+            $libraryId = $val->required_library_id;
+
+            if (!in_array($libraryId, $libraryIds)) {
+                return [
+                    'content_id'      => $contentId,
+                    'library_id'      => $libraryId,
+                    'dependency_type' => $val->dependency_type,
+                    'drop_css'        => 0,
+                    'weight'          => 0,
+                ];
+            }
+
+            return null;
+        })->filter()->toArray();
+
+        if (count($arr) > 0) {
+            DB::table('h5p_contents_libraries')->insert($arr);
         }
     }
-
     /**
      * Implements loadLibrary.
      */
     public function loadLibrary($name, $majorVersion, $minorVersion)
     {
+        $uberName = $name . ' ' . $majorVersion . '.' . $minorVersion;
+
+        if (in_array($uberName, array_keys($this->loadedLibraries))) {
+            return $this->loadedLibraries[$uberName];
+        }
+
         $library = DB::table('h5p_libraries')
             ->select(['id as libraryId', 'name as machineName', 'title', 'major_version as majorVersion', 'minor_version as minorVersion', 'patch_version as patchVersion', 'embed_types as embedTypes', 'preloaded_js as preloadedJs', 'preloaded_css as preloadedCss', 'drop_library_css as dropLibraryCss', 'fullscreen', 'runnable', 'semantics', 'has_icon as hasIcon'])
             ->where('name', $name)
@@ -536,6 +582,7 @@ class LaravelH5pRepository implements H5PFrameworkInterface
             }
         }
 
+        $this->loadedLibraries[$uberName] = $return;
         return $return;
     }
 
@@ -695,6 +742,7 @@ class LaravelH5pRepository implements H5PFrameworkInterface
         foreach ($fields as $name => $value) {
             $processedFields[self::camelToString($name)] = $value;
         }
+
         DB::table('h5p_contents')->where('id', $id)->update($processedFields);
     }
 
@@ -901,13 +949,18 @@ class LaravelH5pRepository implements H5PFrameworkInterface
      */
     public function saveCachedAssets($key, $libraries)
     {
+        $cache = [];
+
         foreach ($libraries as $library) {
             // TODO: Avoid errors if they already exists...
-            DB::table('h5p_libraries_cachedassets')->insert(
-                [
-                    'library_id' => isset($library['id']) ? $library['id'] : $library['libraryId'],
-                    'hash'       => $key,
-                ]);
+            $cache[] = [
+                'library_id' => isset($library['id']) ? $library['id'] : $library['libraryId'],
+                'hash'       => $key,
+            ];
+        }
+
+        if (count($cache) > 0) {
+            DB::table('h5p_libraries_cachedassets')->insert($cache);
         }
     }
 
@@ -995,9 +1048,11 @@ class LaravelH5pRepository implements H5PFrameworkInterface
         // Replace existing content type cache
         DB::table('h5p_libraries_hub_cache')->truncate();
 
+        $cache = [];
+
         foreach ($contentTypeCache->contentTypes as $ct) {
             // Insert into db
-            DB::table('h5p_libraries_hub_cache')->insert([
+            $cache[] = [
                 'machine_name' => $ct->id,
                 'major_version' => $ct->version->major,
                 'minor_version' => $ct->version->minor,
@@ -1019,7 +1074,11 @@ class LaravelH5pRepository implements H5PFrameworkInterface
                 'keywords' => json_encode(isset($ct->keywords) ? $ct->keywords : []),
                 'categories' => json_encode(isset($ct->categories) ? $ct->categories : []),
                 'owner' => $ct->owner,
-            ]);
+            ];
+        }
+
+        if (count($cache) > 0) {
+            DB::table('h5p_libraries_hub_cache')->insert($cache);
         }
     }
 }

@@ -1,4 +1,4 @@
-# H5P Plugin in Laravel Framework 
+# H5P Plugin for Laravel Framework 
 
 ## Description
 
@@ -46,14 +46,14 @@ Add to Composer-Classmap:
 
 For linux
 ```bash
-cd public/vendor/h5p
+cd public/assets/vendor/h5p
 ln -s ../../../../storage/h5p/content
 ln -s ../../../../storage/h5p/editor
 ln -s ../../../../storage/h5p/libraries
 ```
 For windows
 ```cmd admin window
-cd public/vendor/h5p
+cd public\assets\vendor\h5p
 mklink /d content ..\..\..\..\storage\h5p\content
 mklink /d editor ..\..\..\..\storage\h5p\editor
 mklink /d libraries ..\..\..\..\storage\h5p\libraries

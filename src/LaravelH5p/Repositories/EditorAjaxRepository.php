@@ -62,7 +62,6 @@ class EditorAjaxRepository implements H5PEditorAjaxInterface
         GROUP BY hl2.name, hl2.major_version";
 
         DB::statement("SET SESSION sql_mode='';");
-        DB::statement("SET GLOBAL sql_mode='';");
 
         $select = DB::select("SELECT hl4.id,
                 hl4.name AS machine_name
