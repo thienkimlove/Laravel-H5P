@@ -30,7 +30,7 @@
   },
   "require": {
     "php": "^7.3",
-    "laravel/framework": "7.*",
+    "laravel/framework": "8.*",
     "laravelcollective/html": ">=6.0.0",
     "h5p/h5p-core": "^1.24.0",
     "h5p/h5p-editor": "^1.24.0",
